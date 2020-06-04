@@ -237,8 +237,10 @@
     node R5 in loopback mode as shown in Figure 1. The probe messages are sent by the sender node on the
     congruent path of the data traffic flowing on the SR Path.</t>
  
-    <t>The UDP destination port number in the probe message is user-configured 
+    <t>The destination UDP port number in the probe message is user-configured 
     from the range specified in <xref target="RFC8762"/>.
+    As specified in <xref target="RFC8762"/>, the destination
+    UDP port 862 s used in the probe messages by default. 
     The Source and Destination IP addresses in the probe messages are set to the reflector 
     and the sender node addresses, respectively.
     The IPv4 Time To Live (TTL) and IPv6 Hop Limit (HL) are set to 255.</t>
@@ -366,7 +368,7 @@
   +---------------------------------------------------------------+
   | IP Header                                                     |
   .  Source IP Address = Sender IPv6 Address                      .
-  .  Destination IP Address = Next Hop IPv6 Address               .
+  .  Destination IP Address = Destination IPv6 Address            .
   .                                                               .
   +---------------------------------------------------------------+
   | SRH as specified in RFC 8754                                  |
@@ -406,11 +408,11 @@
               anchor="ure-loopback-mode-enabled-with-network-programming"
               title="Loopback Mode Enabled with Network Programming">
        <artwork>
-               +-------+ t1    Probe      t2 +-------+
+               +-------+ t1   Probe       t2 +-------+
                |       | - - - - - - - - - - |       |
                |   R1  |====================||  R5   |
                |       |&lt;- - - - - - - - - - |       |
-               +-------+     Return Probe    +-------+
+               +-------+      Return Probe   +-------+
                 Sender                       Reflector
                                              (Timestamp, 
                                               Pop and Forward)
@@ -555,7 +557,7 @@
   +---------------------------------------------------------------+
   | IP Header                                                     |
   .  Source IP Address = Sender IPv6 Address                      .
-  .  Destination IP Address = Next Hop IPv6 Address               .
+  .  Destination IP Address = Destination IPv6 Address            .
   .                                                               .
   +---------------------------------------------------------------+
   | SRH as specified in RFC 8754                                  |

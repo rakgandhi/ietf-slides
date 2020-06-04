@@ -254,11 +254,13 @@ Internet-Draft  Performance and Liveness Monitoring in SR      June 2020
    in Figure 1.  The probe messages are sent by the sender node on the
    congruent path of the data traffic flowing on the SR Path.
 
-   The UDP destination port number in the probe message is user-
-   configured from the range specified in [RFC8762].  The Source and
-   Destination IP addresses in the probe messages are set to the
-   reflector and the sender node addresses, respectively.  The IPv4 Time
-   To Live (TTL) and IPv6 Hop Limit (HL) are set to 255.
+   The destination UDP port number in the probe message is user-
+   configured from the range specified in [RFC8762].  As specified in
+   [RFC8762], the destination UDP port 862 s used in the probe messages
+   by default.  The Source and Destination IP addresses in the probe
+   messages are set to the reflector and the sender node addresses,
+   respectively.  The IPv4 Time To Live (TTL) and IPv6 Hop Limit (HL)
+   are set to 255.
 
    No PM session is created on the reflector node R5.  As the probe
    message is not punted on the reflector node for processing, the
@@ -271,8 +273,6 @@ Internet-Draft  Performance and Liveness Monitoring in SR      June 2020
 
    An example of a provisioning model and typical measurement parameters
    for the user-configured destination UDP port is shown in Figure 2:
-
-
 
 
 
@@ -402,7 +402,7 @@ Internet-Draft  Performance and Liveness Monitoring in SR      June 2020
      +---------------------------------------------------------------+
      | IP Header                                                     |
      .  Source IP Address = Sender IPv6 Address                      .
-     .  Destination IP Address = Next Hop IPv6 Address               .
+     .  Destination IP Address = Destination IPv6 Address            .
      .                                                               .
      +---------------------------------------------------------------+
      | SRH as specified in RFC 8754                                  |
@@ -450,11 +450,11 @@ Gandhi, et al.          Expires December 6, 2020                [Page 8]
 Internet-Draft  Performance and Liveness Monitoring in SR      June 2020
 
 
-                  +-------+ t1    Probe      t2 +-------+
+                  +-------+ t1   Probe       t2 +-------+
                   |       | - - - - - - - - - - |       |
                   |   R1  |====================||  R5   |
                   |       |<- - - - - - - - - - |       |
-                  +-------+     Return Probe    +-------+
+                  +-------+      Return Probe   +-------+
                    Sender                       Reflector
                                                 (Timestamp,
                                                  Pop and Forward)
@@ -621,7 +621,7 @@ Internet-Draft  Performance and Liveness Monitoring in SR      June 2020
      +---------------------------------------------------------------+
      | IP Header                                                     |
      .  Source IP Address = Sender IPv6 Address                      .
-     .  Destination IP Address = Next Hop IPv6 Address               .
+     .  Destination IP Address = Destination IPv6 Address            .
      .                                                               .
      +---------------------------------------------------------------+
      | SRH as specified in RFC 8754                                  |
