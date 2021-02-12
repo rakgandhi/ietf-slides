@@ -7,7 +7,7 @@
 <!ENTITY RFC8972 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8972.xml">
 <!ENTITY RFC2104 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2104.xml">
 <!ENTITY RFC2113 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2113.xml">
-<!ENTITY RFC2680 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2680.xml">
+<!ENTITY RFC7680 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7680.xml">
 <!ENTITY RFC4868 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4868.xml">
 <!ENTITY RFC5884 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5884.xml">
 <!ENTITY RFC6335 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6335.xml">
@@ -99,7 +99,7 @@
    Currently there is no efficient active measurement procedure 
    available for accurate data packet loss detection in IP networks.
    Note that an approach for conducting packet loss measurement in IP
-   networks is documented in <xref target="RFC2680"/>.
+   networks is documented in <xref target="RFC7680"/>.
    This approach requires clock synchronization
    between the measurement points and lacks support for
    accurate data packet loss measurement.</t>
@@ -137,7 +137,7 @@
     Also, the location of the transmit counter on the STAMP Session-Reflector 
     reply test packet is not at the same location as the STAMP Session-Sender test packet 
     using the "Direct Measurement" TLV. 
-    This makes updating counters in the STAMP "Direct Measurement" TLV difficult to implement in hardware.</t>
+    This makes it difficult to implement in hardware.</t>
 
     <t>
     Furthermore, for hardware-based implementation, 
@@ -265,6 +265,14 @@
     sessions.  A Session-Sender MAY use the SSID to identify a DLM
     session.  If the SSID is used, it MUST be present in each probe
     packet of the given DLM session.</t>	    
+
+    <t>The DLM Session-Reflector operates in the Stateless mode.
+    The DLM Session-Reflector does not maintain session state and will
+    use the value in the Sequence Number field in the received probe packet
+    as the value for the Sequence Number field in the reply probe
+    packet.  As a result, values in the Sequence Number and Session-Sender
+    Sequence Number fields are the same in this mode.</t>
+
   
     </section>
 
@@ -272,7 +280,7 @@
    <t>In this document, base Session-Sender DLM probe packet formats 
    are defined as shown in Figure 1 and Figure 2 for unauthenticated and authenticated modes, respectively. 
    They are stand-alone DLM probe packet formats to 
-   carry counters for the data traffic 
+   carry the counters for the data traffic 
    flow under measurement. The DLM probe packet formats are similar to the base STAMP test 
    packet formats (for example the locations of the Counters and Timestamps).</t>
 
@@ -486,7 +494,7 @@
    Transmit Counter (64-bit): The number of packets or octets transmitted by
    the Session-Reflector in the DLM reply probe packet. 
    Counter is for the reverse direction data traffic flow under measurement.
-   The Session-Reflector writes the transmit counter at the same location in the
+   The Session-Reflector writes the Transmit Counter at the same location in the
    DLM reply probe packet as the Session-Sender DLM probe packet. 
    This is an important property for hardware-based implementation.</t>
 
@@ -511,8 +519,8 @@
    Counter is for the data traffic flow under measurement.</t>
 
     <t>
-   Session-Sender Counter (64-bit): This is the exact copy of the transmit
-   counter from the received Session-Sender DLM probe packet.</t>
+   Session-Sender Counter (64-bit): This is the exact copy of the Transmit
+   Counter from the received Session-Sender DLM probe packet.</t>
 
     <t>
    Session-Sender Sequence Number (32-bit): This is the exact copy of the Sequence Number 
@@ -539,15 +547,15 @@
 
     <section title="Data Loss Calculation" anchor="sect-6"><t>
    Using the Counters C1, C2, C3 and C4 as per reference topology, 
-   from the nth and (n-1)th DLM probe packets, data packet and byte loss can be 
-   calculated as follows.</t>
+   from the nth and (n-1)th DLM probe packets, packet loss and byte loss for
+   the data traffic flow can be calculated as follows:</t>
 
    <t>
-    Transmit Loss TxL[n-1, n] = (C1[n] – C1[n-1]) - (C2[n] - C2[n-1])
+    Transmit Loss TxL[ n-1, n] = (C1[ n] – C1[ n-1]) - (C2[ n] - C2[ n-1])
    </t>
 
    <t>
-    Receive Loss RxL[n-1, n]  = (C3[n] – C3[n-1]) - (C4[n] – C4[n-1])
+    Receive Loss RxL[ n-1, n]  = (C3[ n] – C3[ n-1]) - (C4[ n] – C4[ n-1])
    </t>
 
    <t>
@@ -555,11 +563,11 @@
    </t>
 
    <t>
-    Total Transmit Loss = TxL[1,2] + TxL[2,3] + ...
+    Total Transmit Loss = TxL[ 1, 2] + TxL[ 2, 3] + ...
    </t>
 
    <t>
-    Total Receive Loss  = RxL[1,2] + RxL[2,3] + ...
+    Total Receive Loss  = RxL[ 1, 2] + RxL[ 2, 3] + ...
    </t>
 
    <t>These values are updated each time a DLM reply probe packet is received and
@@ -569,7 +577,7 @@
    of counter wrap must be taken into account. 
    </t>
  
-   <t>When using Alternate-Marking Method, all counters used for loss calculation
+   <t>When using Alternate-Marking Method, all Counters used for loss calculation
    belongs to the same Block Number, as described in Section 3.1 of <xref target="RFC8321"/>.</t>
 
         </section>
@@ -596,7 +604,7 @@
    Session-Reflector.</t>
 
     <t>If desired, attacks can be mitigated by performing basic validation
-   and sanity checks, at the Session-Sender, of the counter fields
+   and sanity checks, at the Session-Sender, of the Counter fields
    in received DLM reply probe packets.  The minimal state
    associated with these protocols also limits the extent of measurement
    disruption that can be caused by a corrupt or invalid packet to a
@@ -612,6 +620,11 @@
 
     </section>
 
+    <section title="IANA Considerations" anchor="sect-11"><t>
+    This document has no IANA actions.</t>
+
+    </section>
+
     </middle>
 
     <back>
@@ -622,7 +635,7 @@
     &RFC8762;
     </references>
     <references title="Informative References">
-    &RFC2680;
+    &RFC7680;
     &RFC8972;
 
     <reference anchor="ITU-Y1731"><front>
